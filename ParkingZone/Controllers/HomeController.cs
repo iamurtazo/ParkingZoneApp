@@ -1,16 +1,22 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using ParkingZone.Areas.Identity.Data;
 using ParkingZone.Models;
 using System.Diagnostics;
 
 namespace ParkingZone.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly UserManager<ParkingZoneUser> _parkingZoneUser;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, UserManager<ParkingZoneUser> parkingZoneUser)
         {
             _logger = logger;
+            _parkingZoneUser = parkingZoneUser;
         }
 
         public IActionResult Index()
