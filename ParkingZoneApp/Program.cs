@@ -12,6 +12,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddRazorPages();
 
 // Add services to the container.
+//some comment
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
