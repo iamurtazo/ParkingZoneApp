@@ -12,6 +12,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddRazorPages();
 
 // Add services to the container.
+//some comment
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -30,9 +31,16 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
-app.MapRazorPages();
+
+
+app.MapControllerRoute(
+    name: "Admin",
+    pattern: "{area:exists}/{controller=ParkingZone}/{action=Index}/{id?}");
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapRazorPages();
 
 app.Run();

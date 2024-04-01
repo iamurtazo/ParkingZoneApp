@@ -11,7 +11,7 @@ public class ApplicationDbContext : IdentityDbContext
         : base(options)
     {
     }
-    DbSet<ParkingZone> ParkingZones { get; set; }
+    public DbSet<ParkingZone> ParkingZones { get; set; }
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
