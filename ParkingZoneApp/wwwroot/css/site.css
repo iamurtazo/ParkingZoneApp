@@ -21,10 +21,11 @@ body {
   margin-bottom: 60px;
 }
 
+
 /*
-    tab navigation
+tab navigation
 */
-.login-logout-card .card-header{
+.login-logout-card .card-header {
     padding: 0px, 0px, 12px, 0px;
 }
 
