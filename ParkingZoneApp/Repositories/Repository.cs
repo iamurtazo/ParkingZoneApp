@@ -17,7 +17,7 @@ namespace ParkingZoneApp.Repositories
         public void Delete(T entity)
         {
             _dbSet.Remove(entity);
-            _context.SaveChanges();
+            Save();
         }
 
         public IEnumerable<T> GetAll()
@@ -33,12 +33,16 @@ namespace ParkingZoneApp.Repositories
         public void Insert(T entity)
         {
             _dbSet.Add(entity);
-            _context.SaveChanges();
+            Save();
         }
 
         public void Update(T entity)
         {
             _context.Update(entity);    
+            Save();
+        }
+        public void Save()
+        {
             _context.SaveChanges();
         }
     }

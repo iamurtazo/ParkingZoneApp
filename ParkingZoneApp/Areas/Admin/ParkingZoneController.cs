@@ -98,7 +98,6 @@ namespace ParkingZoneApp.Areas.Admin
                 try
                 {
                     _repository.Update(parkingZone);
-                   
                 }
                 catch (DbUpdateConcurrencyException)
                 {
