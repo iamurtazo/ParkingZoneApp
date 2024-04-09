@@ -24,7 +24,8 @@ namespace ParkingZoneApp.Areas.Admin
         // GET: Admin/ParkingZone
         public IActionResult Index()
         {
-            return View(_repository.GetAll());
+            var parkingZones = _repository.GetAll();
+            return View(parkingZones);
         }
 
         // GET: Admin/ParkingZone/Details/5
@@ -141,9 +142,10 @@ namespace ParkingZoneApp.Areas.Admin
             if (parkingZone != null)
             {
                 _repository.Delete(parkingZone);
-            }
+                return RedirectToAction(nameof(Index));
 
-            return RedirectToAction(nameof(Index));
+            }
+            return NotFound();
         }
 
         private bool ParkingZoneExists(int id)
