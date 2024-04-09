@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ParkingZoneApp.Data;
+using ParkingZoneApp.Repositories;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
@@ -9,10 +10,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
+
+builder.Services.AddScoped<IParkingZoneRepository, ParkingZoneRepository>();
+
 builder.Services.AddRazorPages();
 
-// Add services to the container.
-//some comment
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
