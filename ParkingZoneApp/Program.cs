@@ -15,6 +15,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddScoped<IParkingZoneRepository, ParkingZoneRepository>();
 builder.Services.AddScoped<IParkingZoneService, ParkingZoneService>();
 
+
 builder.Services.AddRazorPages();
 
 builder.Services.AddControllersWithViews();
