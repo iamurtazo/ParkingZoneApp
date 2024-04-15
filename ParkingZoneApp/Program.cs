@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ParkingZoneApp.Data;
 using ParkingZoneApp.Repositories;
+using ParkingZoneApp.Services;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
@@ -12,6 +13,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 
 
 builder.Services.AddScoped<IParkingZoneRepository, ParkingZoneRepository>();
+builder.Services.AddScoped<IParkingZoneService, ParkingZoneService>();
 
 builder.Services.AddRazorPages();
 
