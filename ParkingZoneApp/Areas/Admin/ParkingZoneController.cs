@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using ParkingZoneApp.Models;
 using ParkingZoneApp.Repositories;
 using ParkingZoneApp.Services;
+using ParkingZoneApp.ViewModels;
 
 namespace ParkingZoneApp.Areas.Admin
 {
@@ -22,7 +23,8 @@ namespace ParkingZoneApp.Areas.Admin
         public IActionResult Index()
         {
             var parkingZones = _service.GetAll();
-            return View(parkingZones);
+            var viewModels = ListOfItemsVM.MapToModel(parkingZones);
+            return View(viewModels);
         }
 
         // GET: Admin/ParkingZone/Details/5
@@ -38,8 +40,8 @@ namespace ParkingZoneApp.Areas.Admin
             {
                 return NotFound();
             }
-
-            return View(parkingZone);
+            var detailsModel = new DetailsVM(parkingZone);
+            return View(detailsModel);
         }
 
         // GET: Admin/ParkingZone/Create
@@ -53,14 +55,15 @@ namespace ParkingZoneApp.Areas.Admin
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(ParkingZone parkingZone)
+        public IActionResult Create(CreateVM createModel)
         {
             if (ModelState.IsValid)
             {
+                var parkingZone = createModel.MapToModel();
                 _service.Insert(parkingZone);
                 return RedirectToAction(nameof(Index));
             }
-            return View(parkingZone);
+            return View(createModel);
         }
 
         // GET: Admin/ParkingZone/Edit/5
@@ -76,7 +79,8 @@ namespace ParkingZoneApp.Areas.Admin
             {
                 return NotFound();
             }
-            return View(parkingZone);
+            var editModel = new EditVM(parkingZone);
+            return View(editModel);
         }
 
         // POST: Admin/ParkingZone/Edit/5
@@ -84,9 +88,9 @@ namespace ParkingZoneApp.Areas.Admin
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, ParkingZone parkingZone)
+        public IActionResult Edit(int id, EditVM editVM)
         {
-            if (id != parkingZone.Id)
+            if (id != editVM.Id)
             {
                 return NotFound();
             }
@@ -95,11 +99,12 @@ namespace ParkingZoneApp.Areas.Admin
             {
                 try
                 {
+                    var parkingZone = editVM.MapToModel(editVM);
                     _service.Update(parkingZone);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ParkingZoneExists(parkingZone.Id))
+                    if (!ParkingZoneExists(editVM.Id))
                     {
                         return NotFound();
                     }
@@ -110,7 +115,7 @@ namespace ParkingZoneApp.Areas.Admin
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(parkingZone);
+            return View();
         }
 
         // GET: Admin/ParkingZone/Delete/5
