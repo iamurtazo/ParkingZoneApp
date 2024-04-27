@@ -1,8 +1,7 @@
-﻿
-using ParkingZoneApp.Models;
-using ParkingZoneApp.Repositories;
+﻿using ParkingZoneApp.Models;
+using ParkingZoneApp.Repositories.ParkingZoneRepository.ParkingZoneRepository;
 
-namespace ParkingZoneApp.Services
+namespace ParkingZoneApp.Services.ParkingZoneService
 {
     public class ParkingZoneService : Service<ParkingZone>, IParkingZoneService
     {

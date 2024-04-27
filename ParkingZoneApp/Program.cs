@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ParkingZoneApp.Data;
-using ParkingZoneApp.Repositories;
+using ParkingZoneApp.Repositories.ParkingZoneRepository.ParkingZoneRepository;
+using ParkingZoneApp.Repositories.ParkingZoneRepositoryy;
 using ParkingZoneApp.Services;
+using ParkingZoneApp.Services.ParkingZoneService;
+
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 

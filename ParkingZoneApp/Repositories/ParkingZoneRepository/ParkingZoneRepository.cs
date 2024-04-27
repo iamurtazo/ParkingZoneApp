@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ParkingZoneApp.Data;
+﻿using ParkingZoneApp.Data;
 using ParkingZoneApp.Models;
+using ParkingZoneApp.Repositories.ParkingZoneRepository.ParkingZoneRepository;
 
-namespace ParkingZoneApp.Repositories
+namespace ParkingZoneApp.Repositories.ParkingZoneRepositoryy
 {
     public class ParkingZoneRepository : Repository<ParkingZone>, IParkingZoneRepository
     {
