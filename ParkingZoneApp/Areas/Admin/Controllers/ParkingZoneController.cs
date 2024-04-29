@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ParkingZoneApp.Models;
-using ParkingZoneApp.Repositories;
 using ParkingZoneApp.Services;
 using ParkingZoneApp.ViewModels;
 
-namespace ParkingZoneApp.Areas.Admin
+namespace ParkingZoneApp.Areas.Admin.Controllers
 {
     [Authorize]
     [Area("Admin")]
@@ -30,11 +28,6 @@ namespace ParkingZoneApp.Areas.Admin
         // GET: Admin/ParkingZone/Details/5
         public IActionResult Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var parkingZone = _service.GetById(id);
             if (parkingZone == null)
             {
@@ -69,13 +62,8 @@ namespace ParkingZoneApp.Areas.Admin
         // GET: Admin/ParkingZone/Edit/5
         public IActionResult Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var parkingZone = _service.GetById(id);
-            if (parkingZone == null)
+            if (parkingZone is null)
             {
                 return NotFound();
             }
@@ -84,8 +72,6 @@ namespace ParkingZoneApp.Areas.Admin
         }
 
         // POST: Admin/ParkingZone/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, EditVM editVM)
@@ -120,14 +106,9 @@ namespace ParkingZoneApp.Areas.Admin
 
         // GET: Admin/ParkingZone/Delete/5
         public IActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
+        {   
             var parkingZone = _service.GetById(id);
-            if (parkingZone == null)
+            if (parkingZone is null)
             {
                 return NotFound();
             }

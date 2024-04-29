@@ -1,8 +1,7 @@
 ﻿using ParkingZoneApp.Models;
 
-namespace ParkingZoneApp.Repositories
+namespace ParkingZoneApp.Repositories;
+
+public interface IParkingZoneRepository : IRepository<ParkingZone>
 {
-    public interface IParkingZoneRepository : IRepository<ParkingZone>
-    {
-    }
 }
