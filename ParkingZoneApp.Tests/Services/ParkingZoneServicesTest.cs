@@ -1,6 +1,6 @@
 ﻿using Moq;
 using ParkingZoneApp.Models;
-using ParkingZoneApp.Repositories.ParkingZoneRepository.ParkingZoneRepository;
+using ParkingZoneApp.Repositories;
 using ParkingZoneApp.Services;
 using ParkingZoneApp.Services.ParkingZoneService;
 using System.Text.Json;
