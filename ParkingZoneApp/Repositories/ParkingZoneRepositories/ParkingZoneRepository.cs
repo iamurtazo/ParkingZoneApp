@@ -1,8 +1,8 @@
 ﻿using ParkingZoneApp.Data;
 using ParkingZoneApp.Models;
-using ParkingZoneApp.Repositories.ParkingZoneRepository.ParkingZoneRepository;
+using ParkingZoneApp.Repositories.ParkingZoneRepository.ParkingZoneRepositories;
 
-namespace ParkingZoneApp.Repositories.ParkingZoneRepositoryy
+namespace ParkingZoneApp.Repositories.ParkingZoneRepositories
 {
     public class ParkingZoneRepository : Repository<ParkingZone>, IParkingZoneRepository
     {
