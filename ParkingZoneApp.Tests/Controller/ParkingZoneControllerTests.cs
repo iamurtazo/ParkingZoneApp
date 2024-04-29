@@ -41,7 +41,7 @@ namespace ParkingZoneApp.Tests.Controller
 
         #region Index
         [Fact]
-        public void GivenNothing_WhenIndexIsCalled_ThenItShouldReturnListOfViewModels()
+        public void GivenNothing_WhenIndexIsCalled_ThenReturnsListOfViewModels()
         {
             //Arrange
             var expectedParkingZones = new List<ParkingZone>();
@@ -70,7 +70,7 @@ namespace ParkingZoneApp.Tests.Controller
 
         #region Details
         [Fact]
-        public void GivenId_WhenDetailsIsCalled_ThenItShouldReturnNotFound()
+        public void GivenId_WhenDetailsIsCalled_ThenReturnsNotFound()
         {
             //Arrange
             _service.Setup(_service => _service.GetById(_parkingZones[0].Id));
@@ -87,7 +87,7 @@ namespace ParkingZoneApp.Tests.Controller
         }
 
         [Fact]
-        public void GivenId_WhenDetailsIsCalled_ThenItShouldReturnDetailsViewModel()
+        public void GivenId_WhenDetailsIsCalled_ThenReturnsDetailsViewModel()
         {
             //Arrange
             _service.Setup(service => service.GetById(_parkingZones[0].Id)).Returns(_parkingZones[0]);
@@ -109,7 +109,7 @@ namespace ParkingZoneApp.Tests.Controller
 
         #region Create
         [Fact]
-        public void GivenNothing_WhenCreateIsCalled_ThenItShoulReturnCreateView()
+        public void GivenNothing_WhenCreateIsCalled_ThenReturnsCreateView()
         {
             //Arrange
 
@@ -121,14 +121,14 @@ namespace ParkingZoneApp.Tests.Controller
         }
 
         [Fact]
-        public void GivenModel_WhenCreateIsCalled_ThenModelStateIsFalseAndItShouldReturnViewResult()
+        public void GivenModel_WhenCreateIsCalled_ThenModelStateIsFalseAndReturnsViewResult()
         {
             //Arrange
             CreateVM createModel = new();
             _parkingZoneController.ModelState.AddModelError("Name", "Name is required");
 
             //Act
-            var create = _parkingZoneController.Create(new CreateVM());
+            var create = _parkingZoneController.Create(createModel);
             var model = (create as ViewResult).Model;
 
             //Assert
@@ -138,7 +138,7 @@ namespace ParkingZoneApp.Tests.Controller
             Assert.False(_parkingZoneController.ModelState.IsValid);
         }
         [Fact]
-        public void GivenModel_WhenCreateIsCalled_ThenModelStateIsTrueAndItShouldReturnRedirectToAction()
+        public void GivenModel_WhenCreateIsCalled_ThenModelStateIsTrueAndReturnsRedirectToAction()
         {
             //Arrange
             CreateVM createViewModel = new();
@@ -158,7 +158,7 @@ namespace ParkingZoneApp.Tests.Controller
 
         #region Edit
         [Fact]
-        public void GivenId_WhenEditIsCalled_ThenItShouldReturnNotFound()
+        public void GivenId_WhenEditIsCalled_ThenReturnsNotFound()
         {
             //Arrange
             _service.Setup(service => service.GetById(_parkingZones[0].Id));
@@ -174,16 +174,18 @@ namespace ParkingZoneApp.Tests.Controller
         }
 
         [Fact]
-        public void GivenId_WhenEditIsCalled_ThenItShouldReturnEditViewModel()
+        public void GivenId_WhenEditIsCalled_ThenReturnsEditViewModel()
         {
             //Arrange
             var expectedViewModel = new EditVM(_parkingZones[1]);
             _service
                 .Setup(service => service.GetById(_parkingZones[1].Id))
                 .Returns(_parkingZones[1]);
+
             //Act
             var edit = _parkingZoneController.Edit(_parkingZones[1].Id);
             var model = (edit as ViewResult).Model;
+
             //Assert
             Assert.IsType<ViewResult>(edit);
             Assert.IsType<EditVM>(model);
@@ -192,7 +194,7 @@ namespace ParkingZoneApp.Tests.Controller
         }
 
         [Fact]
-        public void GivenIdAndModel_WhenEditIsCalled_ThenItShouldReturnNotFoundResult()
+        public void GivenIdAndModel_WhenEditIsCalled_ThenReturnsNotFoundResult()
         {
             //Arrange
             
@@ -204,7 +206,7 @@ namespace ParkingZoneApp.Tests.Controller
         }
 
         [Fact]
-        public void GivenIdAndModel_WhenEditIsCalled_ThenModelStateIsTrueAndItShouldReturnRedirectToAction()
+        public void GivenIdAndModel_WhenEditIsCalled_ThenModelStateIsTrueAndItReturnsRedirectToAction()
         {
             //Arrange
             _service
@@ -223,7 +225,7 @@ namespace ParkingZoneApp.Tests.Controller
         }
 
         [Fact]  
-        public void GivenIdAndModel_WhenEditIsCalled_ThenModelStateIsFalseAndItShouldReturnViewResult()
+        public void GivenIdAndModel_WhenEditIsCalled_ThenModelStateIsFalseAndReturnsViewResult()
         {
             //Arrange
             _parkingZoneController.ModelState.AddModelError("Name", "Name is required");
@@ -239,7 +241,7 @@ namespace ParkingZoneApp.Tests.Controller
 
         #region Delete
         [Fact]
-        public void GivenId_WhenDeleteIsCalled_ThenItShouldReturnNotFoundResult()
+        public void GivenId_WhenDeleteIsCalled_ThenReturnsNotFoundResult()
         {
             //Arrange
             _service.Setup(service => service.GetById(_parkingZones[0].Id));
@@ -253,7 +255,7 @@ namespace ParkingZoneApp.Tests.Controller
         }
 
         [Fact]
-        public void GivenId_WhenDeleteIsCalled_ThenItShouldReturnDeleteViewModel()
+        public void GivenId_WhenDeleteIsCalled_ThenReturnsDeleteViewModel()
         {
             //Arrange
             _service
@@ -274,7 +276,7 @@ namespace ParkingZoneApp.Tests.Controller
         }
 
         [Fact]
-        public void GivenId_WhenDeleteConfirmedIsCalled_ThenItShouldReturnRedirectToAction()
+        public void GivenId_WhenDeleteConfirmedIsCalled_ThenReturnsRedirectToAction()
         {
             //Arrange
             _service
@@ -297,7 +299,7 @@ namespace ParkingZoneApp.Tests.Controller
         }
 
         [Fact]
-        public void GivenId_WhenDeleteConfirmedIsCalled_ThenItShouldReturnNotFoundResult()
+        public void GivenId_WhenDeleteConfirmedIsCalled_ThenReturnsNotFoundResult()
         {
             //Arrange
             _service.Setup(service => service.GetById(_parkingZones[0].Id));
