@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ParkingZoneApp.Data;
-using ParkingZoneApp.Repositories.ParkingZoneRepository.ParkingZoneRepository;
-using ParkingZoneApp.Repositories.ParkingZoneRepositoryy;
+using ParkingZoneApp.Repositories.ParkingZoneRepositories;
+using ParkingZoneApp.Repositories.ParkingZoneRepository.ParkingZoneRepositories;
 using ParkingZoneApp.Services;
 using ParkingZoneApp.Services.ParkingZoneService;
 

@@ -1,5 +1,5 @@
 ﻿using ParkingZoneApp.Models;
-using ParkingZoneApp.Repositories.ParkingZoneRepository.ParkingZoneRepository;
+using ParkingZoneApp.Repositories.ParkingZoneRepository.ParkingZoneRepositories;
 
 namespace ParkingZoneApp.Services.ParkingZoneService
 {
