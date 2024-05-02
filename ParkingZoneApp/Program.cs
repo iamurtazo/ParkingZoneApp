@@ -4,6 +4,7 @@ using ParkingZoneApp.Data;
 using ParkingZoneApp.Repositories;
 using ParkingZoneApp.Repository;
 using ParkingZoneApp.Services;
+using ParkingZoneApp.Services.ParkingSlotService;
 using ParkingZoneApp.Services.ParkingZoneService;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,9 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 
 builder.Services.AddScoped<IParkingZoneRepository, ParkingZoneRepository>();
 builder.Services.AddScoped<IParkingZoneService, ParkingZoneService>();
+
+builder.Services.AddScoped<IParkingSlotRepository, ParkingSlotRepository>();
+builder.Services.AddScoped<IParkingSlotService, ParkingSlotService>();
 
 
 builder.Services.AddRazorPages();
@@ -44,6 +48,10 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "Admin",
     pattern: "{area:exists}/{controller=ParkingZone}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+    name: "Admin",
+    pattern: "{area:exists}/{controller=ParkingSlots}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",

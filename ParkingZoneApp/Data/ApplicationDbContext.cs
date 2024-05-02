@@ -9,14 +9,17 @@ public class ApplicationDbContext : IdentityDbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
-    {
-    }
+    { }
     public DbSet<ParkingZone> ParkingZones { get; set; }
-    protected override void OnModelCreating(ModelBuilder builder)
-    {
-        base.OnModelCreating(builder);
-        // Customize the ASP.NET Identity model and override the defaults if needed.
-        // For example, you can rename the ASP.NET Identity table names and more.
-        // Add your customizations after calling base.OnModelCreating(builder);
-    }
+    public DbSet<ParkingSlot> ParkingSlots { get; set; }
+
+    //protected override void OnModelCreating(ModelBuilder modelBuilder)
+    //{
+    //    modelBuilder.Entity<ParkingSlot>().HasData
+    //    (
+    //        new ParkingSlot { Id = 1, Number = 55, Category = Enums.SlotCategory.VIP, IsAvailableForBooking = true },
+    //        new ParkingSlot { Id = 2, Number = 56, Category=Enums.SlotCategory.Standard, IsAvailableForBooking = true },
+    //        new ParkingSlot { Id = 3, Number = 57, Category=Enums.SlotCategory.Premium, IsAvailableForBooking = false}
+    //    );
+    //}
 }

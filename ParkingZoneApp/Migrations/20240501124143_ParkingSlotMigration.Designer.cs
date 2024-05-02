@@ -13,8 +13,8 @@ using ParkingZoneApp.Data;
 namespace ParkingZoneApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240328120148_AdminCrudActionsOnParkingZones")]
-    partial class AdminCrudActionsOnParkingZones
+    [Migration("20240501124143_ParkingSlotMigration")]
+    partial class ParkingSlotMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -228,6 +228,33 @@ namespace ParkingZoneApp.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("ParkingZoneApp.Models.ParkingSlot", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Category")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsAvailableForBooking")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ParkingZoneId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParkingZoneId");
+
+                    b.ToTable("ParkingSlots");
+                });
+
             modelBuilder.Entity("ParkingZoneApp.Models.ParkingZone", b =>
                 {
                     b.Property<int>("Id")
@@ -301,6 +328,17 @@ namespace ParkingZoneApp.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ParkingZoneApp.Models.ParkingSlot", b =>
+                {
+                    b.HasOne("ParkingZoneApp.Models.ParkingZone", "ParkingZone")
+                        .WithMany()
+                        .HasForeignKey("ParkingZoneId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ParkingZone");
                 });
 #pragma warning restore 612, 618
         }
