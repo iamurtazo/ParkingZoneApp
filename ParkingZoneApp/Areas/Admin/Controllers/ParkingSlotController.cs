@@ -24,14 +24,10 @@ public class ParkingSlotController : Controller
     public IActionResult Index(int parkingZoneId)
     {
         var parkingSlotVMs = _slotService
-                                .GetSlots(parkingZoneId)
+                                .GetSlotsByZoneId(parkingZoneId)
                                 .Select(slot => new ListOfParkingSlotsVM(slot));
 
         return View(parkingSlotVMs);
     }
     #endregion
-
-    #region Create
-    #endregion
-
 }

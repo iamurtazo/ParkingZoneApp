@@ -102,7 +102,7 @@ public class ParkingSlotServiceTest
         _parkingSlotRepository.Setup(x => x.GetAll()).Returns(new List<ParkingSlot>() { _parkingSlot });
 
         //Act
-        var result = _service.GetSlots(_id);
+        var result = _service.GetSlotsByZoneId(_id);
 
         //Assert
         Assert.IsAssignableFrom<IEnumerable<ParkingSlot>>(result);

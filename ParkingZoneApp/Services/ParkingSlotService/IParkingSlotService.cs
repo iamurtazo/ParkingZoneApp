@@ -4,5 +4,5 @@ namespace ParkingZoneApp.Services.ParkingSlotService;
 
 public interface IParkingSlotService : IService<ParkingSlot>
 {
-    IEnumerable<ParkingSlot> GetSlots(int parkingZoneId);
+    IEnumerable<ParkingSlot> GetSlotsByZoneId(int parkingZoneId);
 }

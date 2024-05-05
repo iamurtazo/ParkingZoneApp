@@ -11,7 +11,7 @@ public class ParkingSlotService : Service<ParkingSlot>, IParkingSlotService
         _slotRepository = repository;
     }
 
-    public IEnumerable<ParkingSlot> GetSlots(int parkingZoneId)
+    public IEnumerable<ParkingSlot> GetSlotsByZoneId(int parkingZoneId)
     {
         return _slotRepository.GetAll()
                               .Where(slot => slot.ParkingZoneId == parkingZoneId);

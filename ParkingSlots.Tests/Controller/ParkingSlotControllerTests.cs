@@ -54,7 +54,7 @@ public class ParkingSlotControllerTests
         var expectedVMs = new List<ListOfParkingSlotsVM>();
         expectedVMs.AddRange(ListOfParkingSlotsVM.MapToModel(_parkingSlot));
 
-        _slotService.Setup(x => x.GetSlots(_Id)).Returns(_parkingSlot);
+        _slotService.Setup(x => x.GetSlotsByZoneId(_Id)).Returns(_parkingSlot);
 
         //Act
         var index = _controller.Index(_Id);
@@ -66,7 +66,7 @@ public class ParkingSlotControllerTests
         Assert.Equal(JsonSerializer.Serialize(model), JsonSerializer.Serialize(expectedVMs));
         Assert.NotNull(index);
         Assert.NotNull(model);
-        _slotService.Verify(_parkingSlot => _parkingSlot.GetSlots(_Id), Times.Once);
+        _slotService.Verify(_parkingSlot => _parkingSlot.GetSlotsByZoneId(_Id), Times.Once);
     }
     #endregion
 }
