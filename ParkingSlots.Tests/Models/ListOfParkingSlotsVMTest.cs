@@ -25,7 +25,7 @@ public class ListOfParkingSlotsVMTest
         (int parkingZoneId, int number, bool isAvailableForBooking, SlotCategory category, bool expected)
     {
         // Arrange
-        var createViewModel = new CreateViewModel
+        ListOfParkingSlotsVM createViewModel = new()
         {
             ParkingZoneId = parkingZoneId,
             Number = number,
