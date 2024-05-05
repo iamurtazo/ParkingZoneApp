@@ -13,9 +13,7 @@ public class ParkingSlotService : Service<ParkingSlot>, IParkingSlotService
 
     public IEnumerable<ParkingSlot> GetSlots(int parkingZoneId)
     {
-        return _slotRepository
-                        .GetAll()
-                        .Where(slot => slot.ParkingZoneId == parkingZoneId);
+        return _slotRepository.GetAll()
+                              .Where(slot => slot.ParkingZoneId == parkingZoneId);
     }
-
 }

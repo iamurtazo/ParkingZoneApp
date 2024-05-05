@@ -17,7 +17,6 @@ public class ParkingSlotControllerTests
     private readonly ParkingSlotController _controller;
     private readonly ParkingZone _parkingZone;
     private readonly List<ParkingSlot> _parkingSlot;
-
     private readonly int _Id = 1;
 
     public ParkingSlotControllerTests()
@@ -35,7 +34,6 @@ public class ParkingSlotControllerTests
                 IsAvailableForBooking = false,
                 ParkingZoneId = 1,
                 Category = 0,
-
             },
             new ()
             {
@@ -45,8 +43,7 @@ public class ParkingSlotControllerTests
                 ParkingZoneId = 1,
                 Category = SlotCategory.Premium
             }
-        };
-        
+        }; 
     }
 
     #region Index
@@ -57,12 +54,10 @@ public class ParkingSlotControllerTests
         var expectedVMs = new List<ListOfParkingSlotsVM>();
         expectedVMs.AddRange(ListOfParkingSlotsVM.MapToModel(_parkingSlot));
 
-        _slotService
-            .Setup(x => x.GetSlots(_Id))
-            .Returns(_parkingSlot);
+        _slotService.Setup(x => x.GetSlots(_Id)).Returns(_parkingSlot);
 
         //Act
-       var index = _controller.Index(_Id);
+        var index = _controller.Index(_Id);
         var model = ((ViewResult)index).Model;
 
         //Assert

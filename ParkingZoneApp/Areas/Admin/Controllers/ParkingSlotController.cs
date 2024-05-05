@@ -21,10 +21,11 @@ public class ParkingSlotController : Controller
 
     #region Index
     // GET: Admin/ParkingSlot
-    public IActionResult Index(int id)
+    public IActionResult Index(int parkingZoneId)
     {
-        var parkingSlotVMs = _slotService.GetSlots(id)
-                                         .Select(slot => new ListOfParkingSlotsVM(slot));
+        var parkingSlotVMs = _slotService
+                                .GetSlots(parkingZoneId)
+                                .Select(slot => new ListOfParkingSlotsVM(slot));
 
         return View(parkingSlotVMs);
     }

@@ -101,7 +101,6 @@ public class ParkingSlotServiceTest
         var expected = new List<ParkingSlot>() { _parkingSlot };
         _parkingSlotRepository.Setup(x => x.GetAll()).Returns(new List<ParkingSlot>() { _parkingSlot });
 
-
         //Act
         var result = _service.GetSlots(_id);
 
@@ -110,7 +109,6 @@ public class ParkingSlotServiceTest
         Assert.Equal(JsonSerializer.Serialize(result), JsonSerializer.Serialize(expected));
         Assert.NotNull(result);
         _parkingSlotRepository.Verify(x => x.GetAll(), Times.Once);
-
     }
     #endregion
 
@@ -131,6 +129,4 @@ public class ParkingSlotServiceTest
         Assert.NotNull(getAll);
     }
     #endregion
-
-
 }

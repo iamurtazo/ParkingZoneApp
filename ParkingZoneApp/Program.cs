@@ -22,7 +22,6 @@ builder.Services.AddScoped<IParkingZoneService, ParkingZoneService>();
 builder.Services.AddScoped<IParkingSlotRepository, ParkingSlotRepository>();
 builder.Services.AddScoped<IParkingSlotService, ParkingSlotService>();
 
-
 builder.Services.AddRazorPages();
 
 builder.Services.AddControllersWithViews();
