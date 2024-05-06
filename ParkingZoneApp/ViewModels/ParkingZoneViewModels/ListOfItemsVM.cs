@@ -1,4 +1,5 @@
 ﻿using ParkingZoneApp.Models;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace ParkingZoneApp.ViewModels
@@ -12,6 +13,7 @@ namespace ParkingZoneApp.ViewModels
         [Required]
         public string Address { get; set; }
         [Required]
+        [DisplayName("Establishment Date")]
         public DateTime EstablishmentDate { get; set; }
         public ListOfItemsVM()
         {

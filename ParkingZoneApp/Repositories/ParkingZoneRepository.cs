@@ -2,12 +2,11 @@
 using ParkingZoneApp.Models;
 using ParkingZoneApp.Repositories;
 
-namespace ParkingZoneApp.Repository
+namespace ParkingZoneApp.Repository;
+
+public class ParkingZoneRepository : Repository<ParkingZone>, IParkingZoneRepository
 {
-    public class ParkingZoneRepository : Repository<ParkingZone>, IParkingZoneRepository
+    public ParkingZoneRepository(ApplicationDbContext context) : base(context)
     {
-        public ParkingZoneRepository(ApplicationDbContext context) : base(context)
-        {
-        }
     }
 }

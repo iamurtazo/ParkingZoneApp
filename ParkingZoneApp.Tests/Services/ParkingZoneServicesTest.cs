@@ -62,7 +62,8 @@ namespace ParkingZoneApp.Tests.Services
         #endregion
 
         #region Delete
-        [Fact] public void GivenModel_WhenDeleteIsCalled_ThenModelIsDeleted()
+        [Fact] 
+        public void GivenModel_WhenDeleteIsCalled_ThenModelIsDeleted()
         {
             //Arrange
             _parkingZoneRepository.Setup(x => x.Delete(_parkingZone));

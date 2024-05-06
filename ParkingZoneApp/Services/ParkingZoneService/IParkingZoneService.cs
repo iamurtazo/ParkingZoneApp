@@ -1,8 +1,7 @@
 ﻿using ParkingZoneApp.Models;
 
-namespace ParkingZoneApp.Services
+namespace ParkingZoneApp.Services;
+
+public interface IParkingZoneService : IService<ParkingZone>
 {
-    public interface IParkingZoneService : IService<ParkingZone>
-    {
-    }
 }
