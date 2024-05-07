@@ -19,10 +19,6 @@ namespace ParkingZoneApp.ViewModels.ParkingSlotViewModels
         [Required]
         public SlotCategory Category { get; set; }
 
-        public ListOfParkingSlotsVM()
-        {
-            
-        }
         public ListOfParkingSlotsVM(ParkingSlot slot)
         {
             Id = slot.Id;
