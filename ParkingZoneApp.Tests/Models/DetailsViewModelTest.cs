@@ -1,5 +1,4 @@
 ﻿using ParkingZoneApp.ViewModels;
-
 using System.ComponentModel.DataAnnotations;
 
 namespace ParkingZoneApp.Tests.Models

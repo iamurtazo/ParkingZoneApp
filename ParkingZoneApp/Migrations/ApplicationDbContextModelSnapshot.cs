@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ParkingZoneApp.Data;
 
-
 #nullable disable
 
 namespace ParkingZoneApp.Migrations
@@ -330,12 +329,17 @@ namespace ParkingZoneApp.Migrations
             modelBuilder.Entity("ParkingZoneApp.Models.ParkingSlot", b =>
                 {
                     b.HasOne("ParkingZoneApp.Models.ParkingZone", "ParkingZone")
-                        .WithMany()
+                        .WithMany("ParkingSlots")
                         .HasForeignKey("ParkingZoneId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("ParkingZone");
+                });
+
+            modelBuilder.Entity("ParkingZoneApp.Models.ParkingZone", b =>
+                {
+                    b.Navigation("ParkingSlots");
                 });
 #pragma warning restore 612, 618
         }

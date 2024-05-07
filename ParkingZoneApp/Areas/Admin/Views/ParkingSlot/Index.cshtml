@@ -1,15 +1,16 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@model IEnumerable<ParkingZoneApp.ViewModels.ParkingSlotViewModels.ListOfParkingSlotsVM>
+@using ParkingZoneApp.ViewModels.ParkingSlotViewModels
+@model IEnumerable<ListOfParkingSlotsVM>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Parking Slots @ViewData["parkingZoneName"]</h1>
 
 <p>
-    <a asp-controller="ParkingSlot" asp-action="Create" class="btn btn-primary">Create New</a> |
+    <a asp-controller="ParkingSlot" asp-action="Create" class="btn btn-primary" asp-route-parkingZoneId="@ViewData["parkingZoneId"]">Create New</a>
     <a asp-controller="ParkingZone" asp-action="Index" class="btn btn-success">Back</a>
 </p>
 <table class="table">

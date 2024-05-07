@@ -16,4 +16,10 @@ public class ParkingSlotService : Service<ParkingSlot>, IParkingSlotService
         return _slotRepository.GetAll()
                               .Where(slot => slot.ParkingZoneId == parkingZoneId);
     }
+
+    public bool IsExistingParkingSlot(int parkingZoneId, int slotNumber)
+    {
+        return _slotRepository.GetAll()
+                              .Any(slot => slot.ParkingZoneId == parkingZoneId && slot.Number == slotNumber);
+    }
 }
