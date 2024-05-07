@@ -106,6 +106,7 @@ public class ParkingSlotControllerTests
         Assert.False(_controller.ModelState.IsValid);
         Assert.NotNull(create);
     }
+
     [Fact]
     public void GivenCreateModel_WhenCreateIsCalled_ThenSlotNumberIsNegativeAndReturnsViewResult()
     {
@@ -138,8 +139,8 @@ public class ParkingSlotControllerTests
         //Assert
         Assert.IsType<ViewResult>(create);
         Assert.False(_controller.ModelState.IsValid);
-
     }
+
     [Fact]
     public void GivenCreateModel_WhenCreateIsCalled_ThenModelStateIsTrueAndReturnsRedirectToActionResult()
     {
