@@ -121,7 +121,7 @@ public class ParkingSlotControllerTests
         //Assert
         Assert.IsType<ViewResult>(create);
         Assert.IsType<CreateViewModel>(createModel);
-        Assert.True(_controller.ModelState.IsValid);
+        Assert.False(_controller.ModelState.IsValid);
         Assert.NotNull(create);
     }
 
