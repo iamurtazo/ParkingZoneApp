@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ParkingZoneApp.Models;
 
-[Table("ParkingSlots")]
 public class ParkingSlot
 {
     [Key]

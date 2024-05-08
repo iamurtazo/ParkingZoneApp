@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ParkingZoneApp.Models;
 
-[Table("ParkingZones")]
 public class ParkingZone
 {
     [Key]
