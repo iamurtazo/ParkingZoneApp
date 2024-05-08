@@ -1,0 +1,51 @@
+﻿@using ParkingZoneApp.Enums
+@using ParkingZoneApp.ViewModels.ParkingSlotViewModels
+
+@model CreateViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>ParkingSlot</h4>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <input type="hidden" value="@Model.ParkingZoneId" asp-for="ParkingZoneId" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Number" class="control-label"></label>
+                <input asp-for="Number" class="form-control" />
+                <span asp-validation-for="Number" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsAvailableForBooking" class="form-check-label"></label> 
+                <br />
+                <input asp-for="IsAvailableForBooking" class="form-check-input" type="checkbox" id="IsAvailableForBooking">
+                <span asp-validation-for="IsAvailableForBooking" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Category" class="control-label"></label>
+                <select asp-for="Category" class="form-select" asp-items="Html.GetEnumSelectList<SlotCategory>()"></select>
+                <span asp-validation-for="Category" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" /> |
+                <a asp-action="Index" asp-route-parkingZoneId=@Model.ParkingZoneId class="btn btn-success">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+<br />
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -2,7 +2,6 @@
 using ParkingZoneApp.Models;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 
 namespace ParkingZoneApp.ViewModels.ParkingSlotViewModels
 {
@@ -19,7 +18,6 @@ namespace ParkingZoneApp.ViewModels.ParkingSlotViewModels
         public int ParkingZoneId { get; set; }
         [Required]
         public SlotCategory Category { get; set; }
-
         public ListOfParkingSlotsVM()
         {
             

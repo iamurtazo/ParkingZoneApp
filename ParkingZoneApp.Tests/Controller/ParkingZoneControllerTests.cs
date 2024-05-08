@@ -61,7 +61,7 @@ namespace ParkingZoneApp.Tests.Controller
             //Assert 
             Assert.IsType<ViewResult>(index);
             Assert.IsAssignableFrom<IEnumerable<ListOfItemsVM>>(model);
-            Assert.Equal(JsonSerializer.Serialize(expectedParkingZones), JsonSerializer.Serialize(model));
+            Assert.Equal(JsonSerializer.Serialize(expectedViewModels), JsonSerializer.Serialize(model));
             Assert.NotNull(index);
             Assert.NotNull(model);
             _service.Verify(_service => _service.GetAll(), Times.Once);
@@ -91,7 +91,7 @@ namespace ParkingZoneApp.Tests.Controller
         {
             //Arrange
             _service.Setup(service => service.GetById(_parkingZones[0].Id)).Returns(_parkingZones[0]);
-
+            var expectedViewModel = new DetailsVM(_parkingZones[0]);
 
             //Act
             var details = _parkingZoneController.Details(_parkingZones[0].Id);
@@ -100,7 +100,7 @@ namespace ParkingZoneApp.Tests.Controller
             //Assert
             Assert.IsType<ViewResult>(details);
             Assert.IsType<DetailsVM>(model);
-            Assert.Equal(JsonSerializer.Serialize(_parkingZones[0]), JsonSerializer.Serialize(model));
+            Assert.Equal(JsonSerializer.Serialize(expectedViewModel), JsonSerializer.Serialize(model));
             Assert.NotNull(details);
             Assert.NotNull(model);
             _service.Verify(_service => _service.GetById(_parkingZones[0].Id), Times.Once);
