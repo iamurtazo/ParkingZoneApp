@@ -18,7 +18,9 @@ public class EditViewModel
     public int ParkingZoneId { get; set; }
     [Required]
     public SlotCategory Category { get; set; }
-    
+
+    public EditViewModel() {}
+
     public EditViewModel(ParkingSlot slot)
     {
         Id = slot.Id;
@@ -26,10 +28,6 @@ public class EditViewModel
         IsAvailableForBooking = slot.IsAvailableForBooking;
         ParkingZoneId = slot.ParkingZoneId;
         Category = slot.Category;
-    }
-    public EditViewModel()
-    {
-        
     }
 
     public ParkingSlot MapToModel(EditViewModel editModel)

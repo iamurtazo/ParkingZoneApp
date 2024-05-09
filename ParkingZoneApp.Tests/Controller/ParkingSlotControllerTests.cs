@@ -166,7 +166,6 @@ public class ParkingSlotControllerTests
         Assert.Equal(404, notFoundResult.StatusCode);
         Assert.NotNull(result);
         _slotService.Verify(x => x.GetById(1), Times.Once);
-
     }
 
     [Fact]
@@ -186,14 +185,12 @@ public class ParkingSlotControllerTests
         Assert.NotNull(result);
         Assert.NotNull(model);
         _slotService.Verify(x => x.GetById(1), Times.Once);
-
     }
 
     [Fact]
     public void GivenIdAndEditViewModel_WhenEditIsCalled_ThenReturnsNotFoundResult()
     {
         //Arrange
-
 
         //Act
         var result = _controller.Edit(1, new EditViewModel() { Id = 2});
@@ -211,6 +208,8 @@ public class ParkingSlotControllerTests
         //Arrange
         var editVM = new EditViewModel(_parkingSlot[0]);
         _controller.ModelState.AddModelError("Number", "Slot number already exists in this zone");
+        _slotService.Setup(_slotService => _slotService.IsExistingParkingSlot(editVM.ParkingZoneId, editVM.Number))
+                    .Returns(true);
 
         //Act
         var result = _controller.Edit(1, editVM);
@@ -221,8 +220,8 @@ public class ParkingSlotControllerTests
         Assert.False(_controller.ModelState.IsValid);
         Assert.Equal(JsonSerializer.Serialize(editVM), JsonSerializer.Serialize(model));
         Assert.NotNull(result);
-        Assert.NotNull(model);
-       
+        Assert.NotNull(model); 
+        _slotService.Verify(x => x.IsExistingParkingSlot(editVM.ParkingZoneId, editVM.Number), Times.Once);
     }
 
     [Fact]

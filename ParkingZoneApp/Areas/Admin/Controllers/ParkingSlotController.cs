@@ -74,7 +74,6 @@ public class ParkingSlotController : Controller
         }
         var editModel = new EditViewModel(slot);
         return View(editModel);
-
     }
 
     // POST: Admin/ParkingSlot/Edit/5
@@ -86,27 +85,21 @@ public class ParkingSlotController : Controller
         {
             return NotFound();
         }
+        
+        var isExistingParkingSlot = _slotService.IsExistingParkingSlot(editModel.ParkingZoneId, editModel.Number);
+
+        if (isExistingParkingSlot)
+        {
+            ModelState.AddModelError("Number", "Slot number already exists in this zone");
+        }
 
         if (ModelState.IsValid)
         {
-            try
-            {
-                ParkingSlot slot = editModel.MapToModel(editModel);
-                _slotService.Update(slot);
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!_slotService.IsExistingParkingSlot(editModel.ParkingZoneId, editModel.Number))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            ParkingSlot parkingslot = editModel.MapToModel(editModel);
+            _slotService.Update(parkingslot);
             return RedirectToAction(nameof(Index), new { ParkingZoneId = editModel.ParkingZoneId });
         }
+
         return View(editModel);
     }
     #endregion
