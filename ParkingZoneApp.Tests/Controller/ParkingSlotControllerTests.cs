@@ -19,6 +19,7 @@ public class ParkingSlotControllerTests
     private readonly List<ParkingSlot> _parkingSlot;
     private readonly int _id = 1;
 
+    #region Constructor
     public ParkingSlotControllerTests()
     {
         _slotService = new Mock<IParkingSlotService>();
@@ -33,7 +34,7 @@ public class ParkingSlotControllerTests
                 Number = 2,
                 IsAvailableForBooking = false,
                 ParkingZoneId = 1,
-                Category = 0,
+                Category = SlotCategory.VIP,
             },
             new ()
             {
@@ -45,6 +46,7 @@ public class ParkingSlotControllerTests
             }
         }; 
     }
+    #endregion
 
     #region Index
     [Fact]
@@ -146,6 +148,100 @@ public class ParkingSlotControllerTests
         Assert.NotNull(result);
         _slotService.Verify(p => p.Insert(It.IsAny<ParkingSlot>()), Times.Once);
         _slotService.Verify(p => p.IsExistingParkingSlot(createVM.ParkingZoneId, createVM.Number), Times.Once);
+    }
+    #endregion
+
+    #region Edit
+    [Fact]
+    public void GivenParkingSlotId_WhenEditIsCalled_ThenReturnsNotFound()
+    {
+        //Arrange
+        _slotService.Setup(x => x.GetById(1)).Returns(() => null);
+
+        //Act
+        var result = _controller.Edit(1);
+
+        //Assert
+        var notFoundResult = Assert.IsType<NotFoundResult>(result);
+        Assert.Equal(404, notFoundResult.StatusCode);
+        Assert.NotNull(result);
+        _slotService.Verify(x => x.GetById(1), Times.Once);
+
+    }
+
+    [Fact]
+    public void GivenParkingSlotId_WhenEditIsCalled_ThenReturnsEditViewModel()
+    {
+        //Arrange
+        var editVM = new EditViewModel(_parkingSlot[0]);
+        _slotService.Setup(x => x.GetById(1)).Returns(_parkingSlot[0]);
+
+        //Act
+        var result = _controller.Edit(1);
+        var model = ((ViewResult)result).Model;
+
+        //Assert
+        Assert.IsType<ViewResult>(result);
+        Assert.Equal(JsonSerializer.Serialize(model), JsonSerializer.Serialize(editVM));
+        Assert.NotNull(result);
+        Assert.NotNull(model);
+        _slotService.Verify(x => x.GetById(1), Times.Once);
+
+    }
+
+    [Fact]
+    public void GivenIdAndEditViewModel_WhenEditIsCalled_ThenReturnsNotFoundResult()
+    {
+        //Arrange
+
+
+        //Act
+        var result = _controller.Edit(1, new EditViewModel() { Id = 2});
+
+        //Assert
+        var notFoundResult = Assert.IsType<NotFoundResult>(result);
+        Assert.Equal(404, notFoundResult.StatusCode);
+        Assert.NotNull(result);
+        _slotService.Verify(x => x.GetById(1), Times.Never);
+    }
+
+    [Fact]
+    public void GivenIdAndEditViewModel_WhenEditIsCalled_ThenSlotNumberExistsAndModelStateIsFalseAndReturnsViewResult()
+    {
+        //Arrange
+        var editVM = new EditViewModel(_parkingSlot[0]);
+        _controller.ModelState.AddModelError("Number", "Slot number already exists in this zone");
+
+        //Act
+        var result = _controller.Edit(1, editVM);
+        var model = ((ViewResult)result).Model;
+
+        //Assert
+        Assert.IsType<ViewResult>(result);
+        Assert.False(_controller.ModelState.IsValid);
+        Assert.Equal(JsonSerializer.Serialize(editVM), JsonSerializer.Serialize(model));
+        Assert.NotNull(result);
+        Assert.NotNull(model);
+       
+    }
+
+    [Fact]
+    public void GivenIdAndEditViewModel_WhenEditIsCalled_ThenModelStateIsTrueAndReturnsRedirectToActionResult()
+    {
+        //Arrange
+        var editVM = new EditViewModel(_parkingSlot[0]);
+        _slotService.Setup(x => x.Update(_parkingSlot[0]));
+        
+        //Act
+        var result = _controller.Edit(1, editVM);
+        var model = result as RedirectToActionResult;
+
+        //Assert
+        Assert.Equal("Index", model.ActionName);
+        Assert.IsType<RedirectToActionResult>(result);
+        Assert.True(_controller.ModelState.IsValid);
+        Assert.NotNull(result);
+        _slotService.Verify(x => x.Update(It.IsAny<ParkingSlot>()), Times.Once);
     }
     #endregion
 }

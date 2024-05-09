@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ParkingZoneApp.Models;
 using ParkingZoneApp.Services;
 using ParkingZoneApp.Services.ParkingSlotService;
@@ -59,6 +60,54 @@ public class ParkingSlotController : Controller
             return RedirectToAction(nameof(Index), new {ParkingZoneId = createModel.ParkingZoneId} );
         }
         return View(createModel);
+    }
+    #endregion
+
+    #region Edit
+    // GET: Admin/ParkingSlot/Edit/5
+    public IActionResult Edit(int? id)
+    {
+        var slot = _slotService.GetById(id);
+        if (slot == null)
+        {
+            return NotFound();
+        }
+        var editModel = new EditViewModel(slot);
+        return View(editModel);
+
+    }
+
+    // POST: Admin/ParkingSlot/Edit/5
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Edit(int id, EditViewModel editModel)
+    {
+        if (id != editModel.Id)
+        {
+            return NotFound();
+        }
+
+        if (ModelState.IsValid)
+        {
+            try
+            {
+                ParkingSlot slot = editModel.MapToModel(editModel);
+                _slotService.Update(slot);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!_slotService.IsExistingParkingSlot(editModel.ParkingZoneId, editModel.Number))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index), new { ParkingZoneId = editModel.ParkingZoneId });
+        }
+        return View(editModel);
     }
     #endregion
 }
