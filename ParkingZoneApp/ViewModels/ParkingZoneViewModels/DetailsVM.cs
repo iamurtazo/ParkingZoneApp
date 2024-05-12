@@ -14,10 +14,7 @@ namespace ParkingZoneApp.ViewModels
         public string Address { get; set; }
         [Required]
         public DateTime EstablishmentDate { get; set; }
-        public DetailsVM()
-        {
-            
-        }
+        public DetailsVM() {}
 
         public DetailsVM(ParkingZone parkingZone)
         {

@@ -61,4 +61,58 @@ public class ParkingSlotController : Controller
         return View(createModel);
     }
     #endregion
+
+    #region Edit
+    public IActionResult Edit(int? id)
+    {
+        var slot = _slotService.GetById(id);
+        if (slot == null)
+        {
+            return NotFound();
+        }
+        var editModel = new EditViewModel(slot);
+        return View(editModel);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Edit(int id, EditViewModel editModel)
+    {
+        if (id != editModel.Id)
+        {
+            return NotFound();
+        }
+
+        var parkingSlot = _slotService.GetById(id);
+        var isExistingParkingSlot = _slotService.IsExistingParkingSlot(editModel.ParkingZoneId, editModel.Number);
+
+        if (isExistingParkingSlot && editModel.Number != parkingSlot.Number)
+        {
+            ModelState.AddModelError("Number", "Slot with this number exists!");
+        }
+
+        if (ModelState.IsValid)
+        {
+            parkingSlot = editModel.MapToModel(parkingSlot);
+            _slotService.Update(parkingSlot);
+            return RedirectToAction(nameof(Index), new { parkingSlot.ParkingZoneId });
+        }
+        return View(editModel);
+    }
+    #endregion
+
+    #region Details
+    public IActionResult Details(int? id)
+    {
+        var slot = _slotService.GetById(id);
+
+        if (slot == null)
+        {
+            return NotFound();
+        }
+
+        var detailsModel = new DetailsViewModel(slot);
+        return View(detailsModel);
+    }
+    #endregion
 }

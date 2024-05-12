@@ -1,5 +1,6 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @using ParkingZoneApp.ViewModels.ParkingSlotViewModels
+
 @model IEnumerable<ListOfParkingSlotsVM>
 
 @{
@@ -45,9 +46,9 @@
                 </td>
                 <td>
                     <div>
-                        <a asp-action="Edit" asp-route-id="@item.ParkingZoneId" class="btn btn-primary">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.ParkingZoneId" class="btn btn-success">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.ParkingZoneId" class="btn btn-danger">Delete</a>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-success">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
                     </div>
                 </td>
             </tr>

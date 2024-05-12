@@ -83,7 +83,6 @@ namespace ParkingZoneApp.Tests.Controller
             Assert.NotNull(details);
             Assert.Equal(404, notFoundResult.StatusCode);
             _service.Verify(_service => _service.GetById(_parkingZones[0].Id), Times.Once);
-
         }
 
         [Fact]
