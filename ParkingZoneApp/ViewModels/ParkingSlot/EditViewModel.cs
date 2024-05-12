@@ -30,15 +30,13 @@ public class EditViewModel
         Category = slot.Category;
     }
 
-    public ParkingSlot MapToModel(EditViewModel editModel)
+    public ParkingSlot MapToModel(ParkingSlot editModel)
     {
-        return new()
-        {
-            Id = editModel.Id,
-            Number = editModel.Number,
-            IsAvailableForBooking = editModel.IsAvailableForBooking,
-            ParkingZoneId = editModel.ParkingZoneId,
-            Category = editModel.Category
-        };
+        editModel.Number = Number;
+        editModel.Category = Category;
+        editModel.IsAvailableForBooking = IsAvailableForBooking;
+
+        return editModel;
     }
+
 }

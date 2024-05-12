@@ -86,25 +86,19 @@ public class ParkingSlotController : Controller
             return NotFound();
         }
 
+        var parkingSlot = _slotService.GetById(id);
+        var isExistingParkingSlot = _slotService.IsExistingParkingSlot(editModel.ParkingZoneId, editModel.Number);
+
+        if (isExistingParkingSlot && editModel.Number != parkingSlot.Number)
+        {
+            ModelState.AddModelError("Number", "Slot with this number exists!");
+        }
+
         if (ModelState.IsValid)
         {
-            try
-            {
-                ParkingSlot slot = editModel.MapToModel(editModel);
-                _slotService.Update(slot);
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (_slotService.IsExistingParkingSlot(editModel.ParkingZoneId, editModel.Number))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-            return RedirectToAction(nameof(Index), new { ParkingZoneId = editModel.ParkingZoneId });
+             parkingSlot = editModel.MapToModel(parkingSlot);
+            _slotService.Update(parkingSlot);
+            return RedirectToAction(nameof(Index), new { parkingSlot.ParkingZoneId });
         }
         return View(editModel);
     }

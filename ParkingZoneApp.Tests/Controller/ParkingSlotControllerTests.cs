@@ -227,18 +227,22 @@ public class ParkingSlotControllerTests
     {
         //Arrange
         var editVM = new EditViewModel(_parkingSlot[0]);
+        _slotService.Setup(x => x.IsExistingParkingSlot(editVM.ParkingZoneId, editVM.Number)).Returns(false);
         _slotService.Setup(x => x.Update(_parkingSlot[0]));
+        _slotService.Setup(x => x.GetById(1)).Returns(_parkingSlot[0]);
         
         //Act
         var result = _controller.Edit(1, editVM);
-        var model = result as RedirectToActionResult;
+        var action = ((RedirectToActionResult)result).ActionName;
 
         //Assert
-        Assert.Equal("Index", model.ActionName);
         Assert.IsType<RedirectToActionResult>(result);
+        Assert.Equal("Index", action);
         Assert.True(_controller.ModelState.IsValid);
         Assert.NotNull(result);
         _slotService.Verify(x => x.Update(It.IsAny<ParkingSlot>()), Times.Once);
+        _slotService.Verify(x => x.IsExistingParkingSlot(editVM.ParkingZoneId, editVM.Number), Times.Once);
+        _slotService.Verify(x => x.GetById(1), Times.Once);
     }
     #endregion
 }
