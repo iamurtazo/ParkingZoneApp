@@ -281,7 +281,6 @@ public class ParkingSlotControllerTests
         Assert.IsAssignableFrom<DetailsVM>(model);
         Assert.Equal(JsonSerializer.Serialize(model), JsonSerializer.Serialize(expectdVM));
         Assert.NotNull(result);
-        Assert.NotNull(model);
         _slotService.Verify(s => s.GetById(_id), Times.Once);
     }
     #endregion

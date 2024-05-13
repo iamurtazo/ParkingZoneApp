@@ -108,9 +108,8 @@ public class ParkingSlotController : Controller
     {
         var slot = _slotService.GetById(id);
         if (slot == null)
-        {
             return NotFound();
-        }
+
 
         var detailsModel = new DetailsVM(slot);
         return View(detailsModel);
