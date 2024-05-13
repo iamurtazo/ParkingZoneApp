@@ -110,7 +110,6 @@ public class ParkingSlotController : Controller
         if (slot == null)
             return NotFound();
 
-
         var detailsModel = new DetailsVM(slot);
         return View(detailsModel);
     }
