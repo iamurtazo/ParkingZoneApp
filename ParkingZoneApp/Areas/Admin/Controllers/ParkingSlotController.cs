@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using ParkingZoneApp.Models;
 using ParkingZoneApp.Services;
 using ParkingZoneApp.Services.ParkingSlotService;
-using ParkingZoneApp.ViewModels;
 using ParkingZoneApp.ViewModels.ParkingSlotViewModels;
+using ParkingZoneApp.ViewModels.ParkingSlotVMs;
 
 namespace ParkingZoneApp.Areas.Admin.Controllers;
 
@@ -101,6 +100,20 @@ public class ParkingSlotController : Controller
             return RedirectToAction(nameof(Index), new { parkingSlot.ParkingZoneId });
         }
         return View(editModel);
+    }
+    #endregion
+
+    #region Details
+    public IActionResult Details(int? id)
+    {
+        var slot = _slotService.GetById(id);
+        if (slot == null)
+        {
+            return NotFound();
+        }
+
+        var detailsModel = new DetailsVM(slot);
+        return View(detailsModel);
     }
     #endregion
 }

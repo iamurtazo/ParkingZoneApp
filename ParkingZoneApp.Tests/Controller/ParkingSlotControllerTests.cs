@@ -6,6 +6,7 @@ using ParkingZoneApp.Models;
 using ParkingZoneApp.Services;
 using ParkingZoneApp.Services.ParkingSlotService;
 using ParkingZoneApp.ViewModels.ParkingSlotViewModels;
+using ParkingZoneApp.ViewModels.ParkingSlotVMs;
 using System.Text.Json;
 
 namespace ParkingSlots.Tests.Controller;
@@ -243,6 +244,45 @@ public class ParkingSlotControllerTests
         _slotService.Verify(x => x.Update(It.IsAny<ParkingSlot>()), Times.Once);
         _slotService.Verify(x => x.IsExistingParkingSlot(editVM.ParkingZoneId, editVM.Number), Times.Once);
         _slotService.Verify(x => x.GetById(1), Times.Once);
+    }
+    #endregion
+
+    #region Details
+    [Fact]
+    public void GivenId_WhenDetailsIsCalled_ThenReturnsNotFound()
+    {
+        //Arrange
+        _slotService.Setup(s => s.GetById(_id)).Returns(() => null);
+
+        //Act
+        var result = _controller.Details(_id);
+
+        //Assert
+        var notFoundResult = Assert.IsType<NotFoundResult>(result);
+        Assert.NotNull(result);
+        Assert.Equal(404, notFoundResult.StatusCode);
+        _slotService.Verify(s => s.GetById(_id), Times.Once);
+
+    }
+
+    [Fact]
+    public void GivenId_WhenDetailsIsCalled_ThenReturnsDetailsViewModel()
+    {
+        //Arrange
+        _slotService.Setup(s => s.GetById(_id)).Returns(_parkingSlot[0]);
+        var expectdVM = new DetailsVM(_parkingSlot[0]);
+
+        //Act
+        var result = _controller.Details(_id);
+        var model = ((ViewResult)result).Model;
+
+        //Assert
+        Assert.IsType<ViewResult>(result);
+        Assert.IsAssignableFrom<DetailsVM>(model);
+        Assert.Equal(JsonSerializer.Serialize(model), JsonSerializer.Serialize(expectdVM));
+        Assert.NotNull(result);
+        Assert.NotNull(model);
+        _slotService.Verify(s => s.GetById(_id), Times.Once);
     }
     #endregion
 }
