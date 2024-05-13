@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ParkingZoneApp.ViewModels.ParkingSlotViewModels;
 
-public class EditViewModel
+public class EditVM
 {
     [Required]
     public int Id { get; set; }
@@ -19,9 +19,9 @@ public class EditViewModel
     [Required]
     public SlotCategory Category { get; set; }
 
-    public EditViewModel() {}
+    public EditVM() {}
 
-    public EditViewModel(ParkingSlot slot)
+    public EditVM(ParkingSlot slot)
     {
         Id = slot.Id;
         Number = slot.Number;

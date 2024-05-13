@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ParkingZoneApp.ViewModels.ParkingSlotViewModels;
 
-public class CreateViewModel
+public class CreateVM
 {
     [Required]
     public int Id { get; set; }

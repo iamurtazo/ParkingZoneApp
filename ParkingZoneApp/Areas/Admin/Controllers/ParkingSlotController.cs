@@ -41,13 +41,13 @@ public class ParkingSlotController : Controller
     // GET: Admin/ParkingSlot/Create
     public IActionResult Create(int parkingZoneId)
     {
-        return View(new CreateViewModel() { ParkingZoneId = parkingZoneId});
+        return base.View(new ViewModels.ParkingSlotViewModels.CreateVM() { ParkingZoneId = parkingZoneId});
     }
 
     // POST: Admin/ParkingSlot/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Create(CreateViewModel createModel)
+    public IActionResult Create(ViewModels.ParkingSlotViewModels.CreateVM createModel)
     {
         if(_slotService.IsExistingParkingSlot(createModel.ParkingZoneId, createModel.Number))
         {
@@ -73,13 +73,13 @@ public class ParkingSlotController : Controller
         {
             return NotFound();
         }
-        var editModel = new EditViewModel(slot);
+        var editModel = new ViewModels.ParkingSlotViewModels.EditVM(slot);
         return View(editModel);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Edit(int id, EditViewModel editModel)
+    public IActionResult Edit(int id, ViewModels.ParkingSlotViewModels.EditVM editModel)
     {
         if (id != editModel.Id)
         {

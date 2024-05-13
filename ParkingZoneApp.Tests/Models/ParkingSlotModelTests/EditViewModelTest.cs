@@ -19,7 +19,7 @@ public class EditViewModelTest
         (int number, bool isAvailableForBooking, SlotCategory category, bool expected)
     {
         //Arrange
-        var editModel = new EditViewModel()
+        var editModel = new EditVM()
         {
             Number = number,
             IsAvailableForBooking = isAvailableForBooking,
