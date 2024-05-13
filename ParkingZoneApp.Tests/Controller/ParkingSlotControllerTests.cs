@@ -284,4 +284,42 @@ public class ParkingSlotControllerTests
         _slotService.Verify(s => s.GetById(_id), Times.Once);
     }
     #endregion
+
+    #region Delete
+    [Fact]
+    public void GivenId_WhenDeleteIsCalled_ThenReturnsNotFound()
+    {
+        //Arrange
+        _slotService.Setup(s => s.GetById(_id)).Returns(() => null);
+
+        //Act
+        var result = _controller.Delete(_id);
+
+        //Assert
+        var notFoundResult = Assert.IsType<NotFoundResult>(result);
+        Assert.NotNull(result);
+        Assert.Equal(404, notFoundResult.StatusCode);
+        _slotService.Verify(s => s.GetById(_id), Times.Once);
+    }
+
+    [Fact]
+    public void GivenId_WhenDeleteIsCalled_ThenModelIsDeletedAndRedirectsToIndex()
+    {
+        //Arrange
+        _slotService.Setup(s => s.GetById(_id)).Returns(_parkingSlot[0]);
+        _slotService.Setup(s => s.Delete(_parkingSlot[0]));
+
+        //Act
+        var result = _controller.DeleteConfirmed(_id);
+        var model = result as RedirectToActionResult;
+
+        //Assert
+        Assert.Equal("Index", model.ActionName);
+        Assert.IsType<RedirectToActionResult>(result);
+        Assert.NotNull(result);
+        _slotService.Verify(s => s.Delete(_parkingSlot[0]), Times.Once);
+        _slotService.Verify(s => s.GetById(_id), Times.Once);
+    }
+    #endregion
+
 }
