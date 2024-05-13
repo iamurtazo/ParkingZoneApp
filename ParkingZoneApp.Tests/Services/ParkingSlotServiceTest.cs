@@ -129,4 +129,34 @@ public class ParkingSlotServiceTest
         Assert.NotNull(result);
     }
     #endregion
+
+    #region IsExistingParkingSlot
+    [Fact]
+    public void GivenParkingZoneIdAndSlotNumber_WhenIsExistingParkingSlotIsCalled_ThenReturnsTrue()
+    {
+        //Arrange
+        _parkingSlotRepository.Setup(x => x.GetAll()).Returns(new List<ParkingSlot>() { _parkingSlot });
+
+        //Act
+        var result = _service.IsExistingParkingSlot(_parkingSlot.ParkingZoneId, _parkingSlot.Number);
+
+        //Assert
+        Assert.True(result);
+        _parkingSlotRepository.Verify(x => x.GetAll(), Times.Once);
+    }
+
+    [Fact]
+    public void GivenParkingZoneIdAndSlotNumber_WhenIsExistingParkingSlotIsCalled_ThenReturnsFalse()
+    {
+        //Arrange
+        _parkingSlotRepository.Setup(x => x.GetAll()).Returns(new List<ParkingSlot>());
+
+        //Act
+        var result = _service.IsExistingParkingSlot(_parkingSlot.ParkingZoneId, _parkingSlot.Number);
+
+        //Assert
+        Assert.False(result);
+        _parkingSlotRepository.Verify(x => x.GetAll(), Times.Once);
+    }
+    #endregion
 }

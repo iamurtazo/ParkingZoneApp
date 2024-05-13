@@ -14,7 +14,8 @@ public class ParkingSlotService : Service<ParkingSlot>, IParkingSlotService
     public IEnumerable<ParkingSlot> GetSlotsByZoneId(int parkingZoneId)
     {
         return _slotRepository.GetAll()
-                              .Where(slot => slot.ParkingZoneId == parkingZoneId);
+                              .Where(slot => slot.ParkingZoneId == parkingZoneId)
+                              .OrderBy(slot => slot.Number);
     }
 
     public bool IsExistingParkingSlot(int parkingZoneId, int slotNumber)

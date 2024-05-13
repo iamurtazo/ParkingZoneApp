@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ParkingZoneApp.Models;
 using ParkingZoneApp.Services;
 using ParkingZoneApp.Services.ParkingSlotService;
+using ParkingZoneApp.ViewModels;
 using ParkingZoneApp.ViewModels.ParkingSlotViewModels;
 
 namespace ParkingZoneApp.Areas.Admin.Controllers;
@@ -39,13 +41,13 @@ public class ParkingSlotController : Controller
     // GET: Admin/ParkingSlot/Create
     public IActionResult Create(int parkingZoneId)
     {
-        return View(new CreateViewModel() { ParkingZoneId = parkingZoneId});
+        return base.View(new ViewModels.ParkingSlotViewModels.CreateVM() { ParkingZoneId = parkingZoneId});
     }
 
     // POST: Admin/ParkingSlot/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Create(CreateViewModel createModel)
+    public IActionResult Create(ViewModels.ParkingSlotViewModels.CreateVM createModel)
     {
         if(_slotService.IsExistingParkingSlot(createModel.ParkingZoneId, createModel.Number))
         {
@@ -59,6 +61,46 @@ public class ParkingSlotController : Controller
             return RedirectToAction(nameof(Index), new {ParkingZoneId = createModel.ParkingZoneId} );
         }
         return View(createModel);
+    }
+    #endregion
+
+    #region Edit
+    // GET: Admin/ParkingSlot/Edit/5
+    public IActionResult Edit(int? id)
+    {
+        var slot = _slotService.GetById(id);
+        if (slot == null)
+        {
+            return NotFound();
+        }
+        var editModel = new ViewModels.ParkingSlotViewModels.EditVM(slot);
+        return View(editModel);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Edit(int id, ViewModels.ParkingSlotViewModels.EditVM editModel)
+    {
+        if (id != editModel.Id)
+        {
+            return NotFound();
+        }
+
+        var parkingSlot = _slotService.GetById(id);
+        var isExistingParkingSlot = _slotService.IsExistingParkingSlot(editModel.ParkingZoneId, editModel.Number);
+
+        if (isExistingParkingSlot && editModel.Number != parkingSlot.Number)
+        {
+            ModelState.AddModelError("Number", "Slot with this number exists!");
+        }
+
+        if (ModelState.IsValid)
+        {
+             parkingSlot = editModel.MapToModel(parkingSlot);
+            _slotService.Update(parkingSlot);
+            return RedirectToAction(nameof(Index), new { parkingSlot.ParkingZoneId });
+        }
+        return View(editModel);
     }
     #endregion
 }

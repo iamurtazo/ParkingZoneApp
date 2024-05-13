@@ -19,6 +19,7 @@ public class ParkingSlotControllerTests
     private readonly List<ParkingSlot> _parkingSlot;
     private readonly int _id = 1;
 
+    #region Constructor
     public ParkingSlotControllerTests()
     {
         _slotService = new Mock<IParkingSlotService>();
@@ -33,7 +34,7 @@ public class ParkingSlotControllerTests
                 Number = 2,
                 IsAvailableForBooking = false,
                 ParkingZoneId = 1,
-                Category = 0,
+                Category = SlotCategory.VIP,
             },
             new ()
             {
@@ -45,6 +46,7 @@ public class ParkingSlotControllerTests
             }
         }; 
     }
+    #endregion
 
     #region Index
     [Fact]
@@ -76,7 +78,7 @@ public class ParkingSlotControllerTests
     public void GivenParkingZoneId_WhenCreateIsCalled_ThenReturnsCreateViewModel()
     {
         //Arrange
-        var createVM = new CreateViewModel() { ParkingZoneId = _id };
+        var createVM = new CreateVM() { ParkingZoneId = _id };
 
         //Act
         var result = _controller.Create(_id);
@@ -84,7 +86,7 @@ public class ParkingSlotControllerTests
 
         //Assert
         Assert.IsType<ViewResult>(result);
-        Assert.IsAssignableFrom<CreateViewModel>(model);
+        Assert.IsAssignableFrom<CreateVM>(model);
         Assert.Equal(JsonSerializer.Serialize(model), JsonSerializer.Serialize(createVM));
         Assert.NotNull(result);
     }
@@ -93,13 +95,13 @@ public class ParkingSlotControllerTests
     public void GivenCreateModel_WhenCreateIsCalled_ThenSlotExistsAndReturnsViewResult()
     {
         //Arrange
-        var createVM = new CreateViewModel() { ParkingZoneId = _id, Number = 2 };
+        var createVM = new CreateVM() { ParkingZoneId = _id, Number = 2 };
         _controller.ModelState.AddModelError("Number", "Slot number already exists in this zone");
         _slotService.Setup(p => p.IsExistingParkingSlot(createVM.ParkingZoneId, createVM.Number))
                     .Returns(true);
 
         //Act
-        var result = _controller.Create(new CreateViewModel());
+        var result = _controller.Create(new CreateVM());
 
         //Assert
         Assert.IsType<ViewResult>(result);
@@ -112,16 +114,16 @@ public class ParkingSlotControllerTests
     {
         //Arrange
         _controller.ModelState.AddModelError("Number", "Number can not be negative");
-        CreateViewModel createModel = new() { ParkingZoneId = 1, Number = -5 };
+        CreateVM createModel = new() { ParkingZoneId = 1, Number = -5 };
         _slotService.Setup(s => s.IsExistingParkingSlot(createModel.ParkingZoneId, createModel.Number))
                     .Returns(true);
 
         //Act
-        var result = _controller.Create(new CreateViewModel());
+        var result = _controller.Create(new CreateVM());
 
         //Assert
         Assert.IsType<ViewResult>(result);
-        Assert.IsType<CreateViewModel>(createModel);
+        Assert.IsType<CreateVM>(createModel);
         Assert.False(_controller.ModelState.IsValid);
         Assert.NotNull(result);
     }
@@ -130,7 +132,7 @@ public class ParkingSlotControllerTests
     public void GivenCreateModel_WhenCreateIsCalled_ThenModelStateIsTrueAndReturnsRedirectToActionResult()
     {
         //Arrange
-        var createVM = new CreateViewModel() { ParkingZoneId = 3, Number = 2 };
+        var createVM = new CreateVM() { ParkingZoneId = 3, Number = 2 };
         _slotService.Setup(p => p.IsExistingParkingSlot(createVM.ParkingZoneId, createVM.Number))
                     .Returns(false);
         _slotService.Setup(p => p.Insert(It.IsAny<ParkingSlot>()));
@@ -146,6 +148,101 @@ public class ParkingSlotControllerTests
         Assert.NotNull(result);
         _slotService.Verify(p => p.Insert(It.IsAny<ParkingSlot>()), Times.Once);
         _slotService.Verify(p => p.IsExistingParkingSlot(createVM.ParkingZoneId, createVM.Number), Times.Once);
+    }
+    #endregion
+
+    #region Edit
+    [Fact]
+    public void GivenParkingSlotId_WhenEditIsCalled_ThenReturnsNotFound()
+    {
+        //Arrange
+        _slotService.Setup(x => x.GetById(1)).Returns(() => null);
+
+        //Act
+        var result = _controller.Edit(1);
+
+        //Assert
+        var notFoundResult = Assert.IsType<NotFoundResult>(result);
+        Assert.Equal(404, notFoundResult.StatusCode);
+        Assert.NotNull(result);
+        _slotService.Verify(x => x.GetById(1), Times.Once);
+    }
+
+    [Fact]
+    public void GivenParkingSlotId_WhenEditIsCalled_ThenReturnsEditViewModel()
+    {
+        //Arrange
+        var editVM = new EditVM(_parkingSlot[0]);
+        _slotService.Setup(x => x.GetById(1)).Returns(_parkingSlot[0]);
+
+        //Act
+        var result = _controller.Edit(1);
+        var model = ((ViewResult)result).Model;
+
+        //Assert
+        Assert.IsType<ViewResult>(result);
+        Assert.Equal(JsonSerializer.Serialize(model), JsonSerializer.Serialize(editVM));
+        Assert.NotNull(result);
+        Assert.NotNull(model);
+        _slotService.Verify(x => x.GetById(1), Times.Once);
+    }
+
+    [Fact]
+    public void GivenIdAndEditViewModel_WhenEditIsCalled_ThenReturnsNotFoundResult()
+    {
+        //Arrange
+
+        //Act
+        var result = _controller.Edit(1, new EditVM() { Id = 2});
+
+        //Assert
+        var notFoundResult = Assert.IsType<NotFoundResult>(result);
+        Assert.Equal(404, notFoundResult.StatusCode);
+        Assert.NotNull(result);
+        _slotService.Verify(x => x.GetById(1), Times.Never);
+    }
+
+    [Fact]
+    public void GivenIdAndEditViewModel_WhenEditIsCalled_ThenSlotNumberExistsAndModelStateIsFalseAndReturnsViewResult()
+    {
+        //Arrange
+        var editVM = new EditVM(_parkingSlot[0]);
+        _controller.ModelState.AddModelError("Number", "Slot number already exists in this zone");
+        
+
+        //Act
+        var result = _controller.Edit(1, editVM);
+        var model = ((ViewResult)result).Model;
+
+        //Assert
+        Assert.IsType<ViewResult>(result);
+        Assert.False(_controller.ModelState.IsValid);
+        Assert.Equal(JsonSerializer.Serialize(editVM), JsonSerializer.Serialize(model));
+        Assert.NotNull(result);
+        Assert.NotNull(model); 
+    }
+
+    [Fact]
+    public void GivenIdAndEditViewModel_WhenEditIsCalled_ThenModelStateIsTrueAndReturnsRedirectToActionResult()
+    {
+        //Arrange
+        var editVM = new EditVM(_parkingSlot[0]);
+        _slotService.Setup(x => x.IsExistingParkingSlot(editVM.ParkingZoneId, editVM.Number)).Returns(false);
+        _slotService.Setup(x => x.Update(_parkingSlot[0]));
+        _slotService.Setup(x => x.GetById(1)).Returns(_parkingSlot[0]);
+        
+        //Act
+        var result = _controller.Edit(1, editVM);
+        var action = ((RedirectToActionResult)result).ActionName;
+
+        //Assert
+        Assert.IsType<RedirectToActionResult>(result);
+        Assert.Equal("Index", action);
+        Assert.True(_controller.ModelState.IsValid);
+        Assert.NotNull(result);
+        _slotService.Verify(x => x.Update(It.IsAny<ParkingSlot>()), Times.Once);
+        _slotService.Verify(x => x.IsExistingParkingSlot(editVM.ParkingZoneId, editVM.Number), Times.Once);
+        _slotService.Verify(x => x.GetById(1), Times.Once);
     }
     #endregion
 }

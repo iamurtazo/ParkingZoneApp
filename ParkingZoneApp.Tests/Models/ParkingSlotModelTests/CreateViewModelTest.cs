@@ -18,7 +18,7 @@ public class CreateViewModelTest
         int number, bool isAvailableForBooking, SlotCategory category, bool expected)
     {
         // Arrange
-        CreateViewModel createViewModel = new()
+        CreateVM createViewModel = new()
         {
             Number = number,
             IsAvailableForBooking = isAvailableForBooking,
