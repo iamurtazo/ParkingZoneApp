@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ParkingZoneApp.Models;
+﻿using ParkingZoneApp.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace ParkingZoneApp.ViewModels
@@ -14,10 +13,8 @@ namespace ParkingZoneApp.ViewModels
         public string Address { get; set; }
         [Required]
         public DateTime EstablishmentDate { get; set; }
-        public DetailsVM()
-        {
-            
-        }
+
+        public DetailsVM() { }
 
         public DetailsVM(ParkingZone parkingZone)
         {
