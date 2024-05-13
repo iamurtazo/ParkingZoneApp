@@ -114,4 +114,28 @@ public class ParkingSlotController : Controller
         return View(detailsModel);
     }
     #endregion
+
+    #region Delete
+    public IActionResult Delete(int? id)
+    {
+        var slot = _slotService.GetById(id);
+        if (slot == null)
+            return NotFound();
+
+        return View(slot);
+    }
+
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public IActionResult DeleteConfirmed(int id)
+    {
+        var slot = _slotService.GetById(id);
+        if (slot == null)
+            return NotFound();
+
+        _slotService.Delete(slot);
+        return RedirectToAction(nameof(Index), new { slot.ParkingZoneId });
+    }
+    #endregion
+
 }
