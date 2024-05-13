@@ -137,5 +137,4 @@ public class ParkingSlotController : Controller
         return RedirectToAction(nameof(Index), new { slot.ParkingZoneId });
     }
     #endregion
-
 }
