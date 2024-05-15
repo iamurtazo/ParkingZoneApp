@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ParkingZoneApp.Data;
+using ParkingZoneApp.Models;
 using ParkingZoneApp.Repositories;
 using ParkingZoneApp.Repository;
 using ParkingZoneApp.Services;
@@ -8,11 +9,12 @@ using ParkingZoneApp.Services.ParkingSlotService;
 using ParkingZoneApp.Services.ParkingZoneService;
 
 var builder = WebApplication.CreateBuilder(args);
+
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 
@@ -21,6 +23,9 @@ builder.Services.AddScoped<IParkingZoneService, ParkingZoneService>();
 
 builder.Services.AddScoped<IParkingSlotRepository, ParkingSlotRepository>();
 builder.Services.AddScoped<IParkingSlotService, ParkingSlotService>();
+
+builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<SignInManager<ApplicationUser>>();
 
 builder.Services.AddRazorPages();
 
