@@ -93,7 +93,6 @@ namespace ParkingZoneApp.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
         }
 
-
         public async Task OnGetAsync(string returnUrl = null)
         {
             if (User.Identity.IsAuthenticated)
@@ -152,7 +151,7 @@ namespace ParkingZoneApp.Areas.Identity.Pages.Account
             // If we got this far, something failed, redisplay form
             return Page();
         }
-        
+
         private ApplicationUser CreateUser()
         {
             try
